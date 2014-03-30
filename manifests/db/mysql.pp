@@ -71,6 +71,7 @@ class openstack::db::mysql (
     $mysql_ca               = undef,
     $mysql_cert             = undef,
     $mysql_key              = undef,
+    $mysql_default_engine   = 'UNSET',
     # Keystone
     $keystone_db_user       = 'keystone',
     $keystone_db_dbname     = 'keystone',
@@ -101,12 +102,13 @@ class openstack::db::mysql (
   # Install and configure MySQL Server
   class { 'mysql::server':
     config_hash => {
-      'root_password' => $mysql_root_password,
-      'bind_address'  => $mysql_bind_address,
-      'ssl'           => $mysql_ssl,
-      'ssl_ca'        => $mysql_ca,
-      'ssl_cert'      => $mysql_cert,
-      'ssl_key'       => $mysql_key,
+      'root_password'  => $mysql_root_password,
+      'bind_address'   => $mysql_bind_address,
+      'ssl'            => $mysql_ssl,
+      'ssl_ca'         => $mysql_ca,
+      'ssl_cert'       => $mysql_cert,
+      'ssl_key'        => $mysql_key,
+      'default_engine' => $mysql_default_engine,
     },
     enabled     => $enabled,
   }
