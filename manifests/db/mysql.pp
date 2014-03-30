@@ -73,12 +73,15 @@ class openstack::db::mysql (
     $mysql_key              = undef,
     $mysql_default_engine   = 'UNSET',
     # Keystone
+    $keystone               = true,
     $keystone_db_user       = 'keystone',
     $keystone_db_dbname     = 'keystone',
     # Glance
+    $glance                 = true,
     $glance_db_user         = 'glance',
     $glance_db_dbname       = 'glance',
     # Nova
+    $nova                   = true,
     $nova_db_user           = 'nova',
     $nova_db_dbname         = 'nova',
     # Cinder
@@ -120,30 +123,36 @@ class openstack::db::mysql (
 
   if ($enabled) {
     # Create the Keystone db
-    class { 'keystone::db::mysql':
-      user          => $keystone_db_user,
-      password      => $keystone_db_password,
-      dbname        => $keystone_db_dbname,
-      allowed_hosts => $allowed_hosts,
-      charset       => $charset,
+    if ($keystone) {
+      class { 'keystone::db::mysql':
+        user          => $keystone_db_user,
+        password      => $keystone_db_password,
+        dbname        => $keystone_db_dbname,
+        allowed_hosts => $allowed_hosts,
+        charset       => $charset,
+      }
     }
 
     # Create the Glance db
-    class { 'glance::db::mysql':
-      user          => $glance_db_user,
-      password      => $glance_db_password,
-      dbname        => $glance_db_dbname,
-      allowed_hosts => $allowed_hosts,
-      charset       => $charset,
+    if ($glance) {
+      class { 'glance::db::mysql':
+        user          => $glance_db_user,
+        password      => $glance_db_password,
+        dbname        => $glance_db_dbname,
+        allowed_hosts => $allowed_hosts,
+        charset       => $charset,
+      }
     }
 
     # Create the Nova db
-    class { 'nova::db::mysql':
-      user          => $nova_db_user,
-      password      => $nova_db_password,
-      dbname        => $nova_db_dbname,
-      allowed_hosts => $allowed_hosts,
-      charset       => $charset,
+    if ($nova) {
+      class { 'nova::db::mysql':
+        user          => $nova_db_user,
+        password      => $nova_db_password,
+        dbname        => $nova_db_dbname,
+        allowed_hosts => $allowed_hosts,
+        charset       => $charset,
+      }
     }
 
     # create cinder db
